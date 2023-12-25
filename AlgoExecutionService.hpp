@@ -181,11 +181,9 @@ class AlgoExecutionServiceListener : public ServiceListener<OrderBook<T>> {
     void ProcessAdd(OrderBook<T>& _data);
 
     // Listener callback to process a remove event to the Service
-    // No implementation
     void ProcessRemove(OrderBook<T>& _data);
 
     // Listener callback to process an update event to the Service
-    // No implementation
     void ProcessUpdate(OrderBook<T>& _data);
 
   private:
@@ -204,6 +202,7 @@ void AlgoExecutionServiceListener<T>::ProcessAdd(OrderBook<T>& _data) {
     service->AlgoExecutionTrade(_data);
 }
 
+// No implementation
 template <typename T>
 void AlgoExecutionServiceListener<T>::ProcessRemove(OrderBook<T>& _data) {}
 

@@ -1,6 +1,6 @@
- /**
+/**
  * execution.hpp
- * Defines the data type for executions.
+ * Defines the ExecutionOrder data type for executions.
  *
  * @author Breman Thuraisingham
  * @coauthor Yumin Jiang
@@ -9,11 +9,12 @@
 #define EXECUTION_HPP
 
 #include <string>
-// #include "soa.hpp"
 #include "marketdataservice.hpp"
 
+// Enumeration for order types
 enum OrderType { FOK, IOC, MARKET, LIMIT, STOP };
 
+// Enumeration for different markets
 enum Market { BROKERTEC, ESPEED, CME };
 
 /**
@@ -23,40 +24,41 @@ enum Market { BROKERTEC, ESPEED, CME };
 template <typename T> class ExecutionOrder {
 
   public:
-    // ctor for an order
+    // Constructor for an order
     ExecutionOrder() = default;
     ExecutionOrder(const T& _product, PricingSide _side, string _orderId,
                    OrderType _orderType, double _price, double _visibleQuantity,
                    double _hiddenQuantity, string _parentOrderId,
                    bool _isChildOrder);
 
-    // Get the product
+    // Get the product associated with the order
     const T& GetProduct() const;
 
-    // Get the pricing side
+    // Get the pricing side (BID or OFFER)
     PricingSide GetPricingSide() const;
 
     // Get the order ID
     const string& GetOrderId() const;
 
-    // Get the order type on this order
+    // Get the order type (FOK, IOC, MARKET, LIMIT, STOP)
     OrderType GetOrderType() const;
 
-    // Get the price on this order
+    // Get the price specified in the order
     double GetPrice() const;
 
-    // Get the visible quantity on this order
+    // Get the visible quantity in the order
     long GetVisibleQuantity() const;
 
-    // Get the hidden quantity
+    // Get the hidden quantity in the order
     long GetHiddenQuantity() const;
 
-    // Get the parent order ID
+    // Get the parent order ID if it's a child order
     const string& GetParentOrderId() const;
 
-    // Is child order?
+    // Check if it's a child order
     bool IsChildOrder() const;
 
+    // Function to format and print order details
     vector<string> PrintFunction() const;
 
   private:
@@ -127,38 +129,42 @@ template <typename T> bool ExecutionOrder<T>::IsChildOrder() const {
 
 template <typename T> vector<string> ExecutionOrder<T>::PrintFunction() const {
     string _product = product.GetProductId();
-    string _side;
-    _side = side == BID ? "BID" : "OFFER";
+    string _side = (side == BID) ? "BID" : "OFFER";
     string _orderId = orderId;
     string _orderType;
-    if (orderType == FOK) {
-        _orderType = "FOK";
-    }
-    if (orderType == IOC) {
-        _orderType = "IOC";
-    }
-    if (orderType == MARKET) {
-        _orderType = "MARKET";
-    }
-    if (orderType == LIMIT) {
-        _orderType = "LIMIT";
-    }
-    if (orderType == STOP) {
-        _orderType = "STOP";
+
+    // Mapping order type enum to string
+    switch (orderType) {
+        case FOK:
+            _orderType = "FOK";
+            break;
+        case IOC:
+            _orderType = "IOC";
+            break;
+        case MARKET:
+            _orderType = "MARKET";
+            break;
+        case LIMIT:
+            _orderType = "LIMIT";
+            break;
+        case STOP:
+            _orderType = "STOP";
+            break;
+        default:
+            _orderType = "UNKNOWN";
+            break;
     }
 
     string _price = price2string(price);
     string _visibleQuantity = to_string(visibleQuantity);
-    _visibleQuantity =
-        _visibleQuantity.substr(0, _visibleQuantity.find(".") + 1);
+    _visibleQuantity = _visibleQuantity.substr(0, _visibleQuantity.find(".") + 1);
     string _hiddenQuantity = to_string(hiddenQuantity);
     _hiddenQuantity = _hiddenQuantity.substr(0, _hiddenQuantity.find(".") + 1);
     string _parentOrderId = parentOrderId;
     string _isChildOrder = isChildOrder ? "YES" : "NO";
 
-    vector<string> _strings{_product,        _side,          _orderId,
-                            _orderType,      _price,         _visibleQuantity,
-                            _hiddenQuantity, _parentOrderId, _isChildOrder};
+    vector<string> _strings{_product, _side, _orderId, _orderType, _price,
+                            _visibleQuantity, _hiddenQuantity, _parentOrderId, _isChildOrder};
     return _strings;
 }
 

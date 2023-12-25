@@ -10,6 +10,7 @@
 
 #include "streaming.hpp"
 #include "pricingservice.hpp"
+#include "utility.hpp"
 
 /**
 * Definition of the algo stream class
@@ -132,26 +133,26 @@ ServiceListener<Price<T>>* AlgoStreamingService<T>::GetListener()
 template<typename T>
 void AlgoStreamingService<T>::AlgoPublishPrice(Price<T>& _price)
 {
-//    T _product = _price.GetProduct();
-//    string _productId = _product.GetProductId();
-//
-//    double midPrice = _price.GetMid();
-//    double spread = _price.GetBidOfferSpread();
-//    double _bidPrice = midPrice - spread / 2.0;
-//    double _offerPrice = midPrice + spread / 2.0;
-//    long _visibleQuantity = (pricePublishCount % 2 + 1) * 1000000;
-//    long _hiddenQuantity = _visibleQuantity * 2;
-//
-//    pricePublishCount++;
-//    PriceStreamOrder _bidOrder(_bidPrice, _visibleQuantity, _hiddenQuantity, BID);
-//    PriceStreamOrder _offerOrder(_offerPrice, _visibleQuantity, _hiddenQuantity, OFFER);
-//    AlgoStream<T> _algoStream(_product, _bidOrder, _offerOrder);
-//    algoStreams[_productId] = _algoStream;
-//
-//    for (auto& l : listeners)
-//    {
-//        l->ProcessAdd(_algoStream);
-//    }
+    T _product = _price.GetProduct();
+    string _productId = _product.GetProductId();
+
+    double midPrice = _price.GetMid();
+    double spread = _price.GetBidOfferSpread();
+    double _bidPrice = midPrice - spread / 2.0;
+    double _offerPrice = midPrice + spread / 2.0;
+    long _visibleQuantity = (pricePublishCount % 2 + 1) * 1000000;
+    long _hiddenQuantity = _visibleQuantity * 2;
+
+    pricePublishCount++;
+    PriceStreamOrder _bidOrder(_bidPrice, _visibleQuantity, _hiddenQuantity, BID);
+    PriceStreamOrder _offerOrder(_offerPrice, _visibleQuantity, _hiddenQuantity, OFFER);
+    AlgoStream<T> _algoStream(_product, _bidOrder, _offerOrder);
+    algoStreams[_productId] = _algoStream;
+
+    for (auto& l : listeners)
+    {
+        l->ProcessAdd(_algoStream);
+    }
 
 }
 

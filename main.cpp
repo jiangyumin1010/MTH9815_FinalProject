@@ -43,13 +43,11 @@ int main() {
     StreamingService<Bond> BondStreamingService;
     InquiryService<Bond> BondInquiryService;
     GUIService<Bond> BondGUIService;
-    HistoricalDataService<Position<Bond>> BondHistoricalPositionService(
-        POSITION);
-    HistoricalDataService<PV01<Bond>> BondHistoricalRiskService(RISK);
-    HistoricalDataService<ExecutionOrder<Bond>> BondHistoricalExecutionService(
-        EXECUTION);
-    HistoricalDataService<PriceStream<Bond>> BondHistoricalStreamingService(STREAMING);
-    HistoricalDataService<Inquiry<Bond>> BondHistoricalInquiryService(INQUIRY);
+    HistoricalDataService<Position<Bond>> BondHistoricalPositionService("Position");
+    HistoricalDataService<PV01<Bond>> BondHistoricalRiskService("Risk");
+    HistoricalDataService<ExecutionOrder<Bond>> BondHistoricalExecutionService("Execution");
+    HistoricalDataService<PriceStream<Bond>> BondHistoricalStreamingService("Streaming");
+    HistoricalDataService<Inquiry<Bond>> BondHistoricalInquiryService("Inquiry");
     std::cout << "====== Services initialized! ======\n";
 
     // Step 3: Link corresponding service
@@ -75,23 +73,14 @@ int main() {
 
     // Step 4: Read data and write to output
     const string dirPath = "Data/Input/";
-
     ifstream priceData(dirPath + "prices.txt");
     BondPricingService.GetConnector()->Subscribe(priceData);
-    std::cout << "Price processed!" << std::endl;
-
     ifstream marketData(dirPath + "marketdata.txt");
     BondMarketDataService.GetConnector()->Subscribe(marketData);
-    std::cout << "Market data processed!" << std::endl;
-
     ifstream tradeData(dirPath + "trades.txt");
     BondTradeBookingService.GetConnector()->Subscribe(tradeData);
-    std::cout << "Trade processed!" << std::endl;
-
     ifstream inquiryData(dirPath + "inquiries.txt");
     BondInquiryService.GetConnector()->Subscribe(inquiryData);
-    std::cout << "Inquiry data processed!" << std::endl;
-
     std::cout << "====== All Finished! ======" << std::endl;
 
     return 0;
