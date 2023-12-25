@@ -1,0 +1,3 @@
+/Users/yumin/desktop/ts/CMakeFiles/trade.dir
+/Users/yumin/desktop/ts/CMakeFiles/edit_cache.dir
+/Users/yumin/desktop/ts/CMakeFiles/rebuild_cache.dir
